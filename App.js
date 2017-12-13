@@ -1,3 +1,12 @@
-import Home from './pages'
+import {StackNavigator} from 'react-navigation'
 
-export default Home
+import {Home, StationSelect} from './pages'
+
+export default StackNavigator({
+  Home: {
+    screen: Home,
+  },
+  StationSelect: {
+    screen: StationSelect,
+  },
+});

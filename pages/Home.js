@@ -1,14 +1,18 @@
 import React from 'react'
-import { StyleSheet, Text, ScrollView } from 'react-native'
-import {Constants} from 'expo'
+import {Button, StyleSheet, Text, ScrollView} from 'react-native'
 import {get} from 'lodash/fp'
 
-import {getStationStatuses, getStationMetadata} from './api'
-import {Station} from './components'
+import {getStationStatuses, getStationMetadata} from '../api'
+import {Station} from '../components'
 
 const FAVORITE_STATIONS = ['74', '68']
 
 export default class Home extends React.Component {
+  static navigationOptions = ({navigation, screenProps}) => ({
+    title: 'My Stations',
+    headerRight: <Button onPress={() => navigation.navigate('StationSelect')} title="+" />,
+  })
+
   state = {
     metadata: null,
     status: null,
@@ -50,6 +54,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: Constants.statusBarHeight,
   },
 });
