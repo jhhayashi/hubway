@@ -42,11 +42,11 @@ export default class Home extends React.Component {
     return (
       <ScrollView style={styles.container}>
         {this.hasLoaded()
-            ? FAVORITE_STATIONS.map(this.renderStation)
+          ? FAVORITE_STATIONS.map(this.renderStation)
           : <Text>Loading...</Text>
         }
       </ScrollView>
-    );
+    )
   }
 }
 
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-});
+})

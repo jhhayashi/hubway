@@ -26,6 +26,14 @@ export const getStationStatuses = () => new Promise(
   )
 )
 
+const processMetadata = metadata => ({
+  id: metadata.station_id,
+  capacity: metadata.capacity,
+  name: metadata.name,
+})
+
+const processAllMetadata = compose(map(processMetadata), keyById)
+
 export const getStationMetadata = () => new Promise(
-  resolve => resolve(keyById(require('./data/station_information.json').data.stations))
+  resolve => resolve(processAllMetadata(require('./data/station_information.json').data.stations))
 )
