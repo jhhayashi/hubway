@@ -1,8 +1,11 @@
+import React from 'react'
 import {StackNavigator} from 'react-navigation'
+import {Provider} from 'react-redux'
 
 import {Home, StationSelect} from './pages'
+import store from './redux/store'
 
-export default StackNavigator({
+const MainNavigator = StackNavigator({
   Home: {
     screen: Home,
   },
@@ -10,3 +13,9 @@ export default StackNavigator({
     screen: StationSelect,
   },
 });
+
+export default () => (
+  <Provider store={store}>
+    <MainNavigator />
+  </Provider>
+)

@@ -17,7 +17,7 @@ const processStatus = status => ({
 
 const processStatuses = compose(map(processStatus), keyById)
 
-export const getStationStatuses = () => new Promise(
+export const fetchStationStatuses = () => new Promise(
   resolve => setTimeout(() =>
     resolve(processStatuses(
       require('./data/station_status.json').data.stations
@@ -34,6 +34,6 @@ const processMetadata = metadata => ({
 
 const processAllMetadata = compose(map(processMetadata), keyById)
 
-export const getStationMetadata = () => new Promise(
+export const fetchStationMetadata = () => new Promise(
   resolve => resolve(processAllMetadata(require('./data/station_information.json').data.stations))
 )

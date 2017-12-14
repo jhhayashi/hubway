@@ -1,47 +1,51 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Button, StyleSheet, Text, ScrollView} from 'react-native'
-import {get} from 'lodash/fp'
+import {connect} from 'react-redux'
+import {get, identity} from 'lodash/fp'
 
-import {getStationStatuses, getStationMetadata} from '../api'
+import {getStationStatuses, getStationMetadata} from '../redux/actions'
 import {Station} from '../components'
 
 const FAVORITE_STATIONS = ['74', '68']
 
-export default class Home extends React.Component {
+class Home extends React.Component {
   static navigationOptions = ({navigation, screenProps}) => ({
     title: 'My Stations',
     headerRight: <Button onPress={() => navigation.navigate('StationSelect')} title="+" />,
   })
 
+  static propTypes = {
+    stationMetadata: PropTypes.object,
+    stationStatus: PropTypes.object,
+  }
+
   state = {
-    metadata: null,
-    status: null,
+    loaded: false,
   }
 
   componentDidMount() {
     Promise.all([
-      getStationStatuses(),
-      getStationMetadata(),
-    ]).then(([status, metadata]) => {
-      this.setState({status, metadata})
+      this.props.getStationStatuses(),
+      this.props.getStationMetadata(),
+    ]).then(() => {
+      this.setState({loaded: true})
     })
   }
-
-  hasLoaded = () => this.state.status && this.state.metadata
 
   renderStation = id => (
     <Station
       key={id}
       id={id}
-      {...get(id, this.state.status)}
-      {...get(id, this.state.metadata)}
+      {...get(id, this.props.stationStatus)}
+      {...get(id, this.props.stationMetadata)}
     />
   )
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        {this.hasLoaded()
+        {this.state.loaded
           ? FAVORITE_STATIONS.map(this.renderStation)
           : <Text>Loading...</Text>
         }
@@ -56,3 +60,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 })
+
+export default connect(identity, {getStationMetadata, getStationStatuses})(Home)

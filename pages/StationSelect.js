@@ -2,7 +2,6 @@ import React from 'react'
 import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native'
 import {filter, get, map} from 'lodash/fp'
 
-import {getStationStatuses, getStationMetadata} from '../api'
 import {StationOption} from '../components'
 
 const FAVORITE_STATIONS = new Set(['74', '68'])
@@ -16,15 +15,6 @@ export default class StationSelect extends React.Component {
     status: null,
     metadata: null,
     filteredStations: null,
-  }
-
-  componentDidMount() {
-    Promise.all([
-      getStationStatuses(),
-      getStationMetadata(),
-    ]).then(([status, metadata]) => {
-      this.setState({status, metadata, filteredStations: metadata})
-    })
   }
 
   onSearch = query => {
