@@ -1,9 +1,12 @@
 import React from 'react'
 import {StackNavigator} from 'react-navigation'
 import {Provider} from 'react-redux'
+import {PersistGate} from 'redux-persist/es/integration/react'
 
 import {Home, StationSelect} from './pages'
-import store from './redux/store'
+import configureStore from './redux/store'
+
+const {persistor, store} = configureStore()
 
 const MainNavigator = StackNavigator({
   Home: {
@@ -16,6 +19,8 @@ const MainNavigator = StackNavigator({
 
 export default () => (
   <Provider store={store}>
-    <MainNavigator />
+    <PersistGate persistor={persistor}>
+      <MainNavigator />
+    </PersistGate>
   </Provider>
 )
