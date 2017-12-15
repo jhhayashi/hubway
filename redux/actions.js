@@ -15,7 +15,7 @@ export const REJECT_STATUS = 'REJECT_STATUS'
 export const getStationStatuses = () => dispatch => {
   dispatch(action(FETCH_STATUS))
   return api.fetchStationStatuses()
-    .then(stations => dispatch(action(RECEIVE_STATUS, {stations})))
+    .then(data => dispatch(action(RECEIVE_STATUS, data)))
     .catch(err => dispatch(action(REJECT_STATUS, {err})))
 }
 
@@ -26,6 +26,6 @@ export const REJECT_METADATA = 'REJECT_METADATA'
 export const getStationMetadata = () => dispatch => {
   dispatch(action(FETCH_METADATA))
   return api.fetchStationMetadata()
-    .then(stations => dispatch(action(RECEIVE_METADATA, {stations})))
+    .then(data => dispatch(action(RECEIVE_METADATA, data)))
     .catch(err => dispatch(action(REJECT_METADATA, {err})))
 }

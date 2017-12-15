@@ -6,6 +6,7 @@ const DEFAULT_STATE = {
   favoriteStations: new Set([]),
   stationStatus: {},
   stationMetadata: {},
+  lastFetched: null,
 }
 
 const without = (val, set) => {
@@ -22,7 +23,11 @@ export default (state = DEFAULT_STATE, action) => {
     case REMOVE_FAVORITE:
       return {...state, favoriteStations: without(action.payload.id, state.favoriteStations)}
     case RECEIVE_STATUS:
-      return {...state, stationStatus: action.payload.stations}
+      return {
+        ...state,
+        stationStatus: action.payload.stations,
+        lastFetched: action.payload.date,
+      }
     case RECEIVE_METADATA:
       return {...state, stationMetadata: action.payload.stations}
     default:

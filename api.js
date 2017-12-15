@@ -1,5 +1,10 @@
 import {compose, keyBy, map} from 'lodash/fp'
 
+const URLS = {
+  stationMetadata: 'https://gbfs.thehubway.com/gbfs/en/station_information.json',
+  stationStatus: 'https://gbfs.thehubway.com/gbfs/en/station_status.json',
+}
+
 const request = (url, params) => fetch(url, params).then(desearalize)
 
 const desearalize = res =>
@@ -15,16 +20,14 @@ const processStatus = status => ({
   docksAvailable: status.num_docks_available,
 })
 
-const processStatuses = compose(keyById, map(processStatus))
+const processStatuses = res => ({
+  stations: compose(keyById, map(processStatus))(res.data.stations),
+  // TODO add this when hubway's api returns correct value
+  // date: new Date(res.last_updated),
+  date: new Date(),
+})
 
-export const fetchStationStatuses = () => new Promise(
-  resolve => setTimeout(() =>
-    resolve(processStatuses(
-      require('./data/station_status.json').data.stations
-    )),
-    1000
-  )
-)
+export const fetchStationStatuses = () => request(URLS.stationStatus).then(processStatuses)
 
 const processMetadata = metadata => ({
   id: metadata.station_id,
@@ -32,8 +35,11 @@ const processMetadata = metadata => ({
   name: metadata.name,
 })
 
-const processAllMetadata = compose(keyById, map(processMetadata))
+const processAllMetadata = res => ({
+  stations: compose(keyById, map(processMetadata))(res.data.stations),
+  // TODO add this when hubway's api returns correct value
+  // date: new Date(res.last_updated),
+  date: new Date(),
+})
 
-export const fetchStationMetadata = () => new Promise(
-  resolve => resolve(processAllMetadata(require('./data/station_information.json').data.stations))
-)
+export const fetchStationMetadata = () => request(URLS.stationMetadata).then(processAllMetadata)

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Button, StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native'
+import {Button, StyleSheet, ScrollView, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 import {get, identity} from 'lodash/fp'
 
@@ -60,9 +60,16 @@ class Home extends React.Component {
     }
 
     return (
-      <ScrollView style={styles.container}>
-        {[...this.props.favoriteStations].map(this.renderStation)}
-      </ScrollView>
+      <View style={styles.container}>
+        {this.props.lastFetched && (
+          <Text style={styles.timestamp}>
+            Last Updated: {this.props.lastFetched.toLocaleString()}
+          </Text>
+        )}
+        <ScrollView style={styles.container}>
+          {[...this.props.favoriteStations].map(this.renderStation)}
+        </ScrollView>
+      </View>
     )
   }
 }
@@ -76,6 +83,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  timestamp: {
+    marginTop: 10,
+    alignSelf: 'center',
   },
 })
 
