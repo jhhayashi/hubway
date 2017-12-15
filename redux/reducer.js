@@ -16,7 +16,6 @@ const without = (val, set) => {
 const withVal = (val, set) => new Set([...set, val])
 
 export default (state = DEFAULT_STATE, action) => {
-  console.log(action)
   switch (action.type) {
     case ADD_FAVORITE:
       return {...state, favoriteStations: withVal(action.payload.id, state.favoriteStations)}

@@ -1,39 +1,68 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native'
-import {filter, get, map} from 'lodash/fp'
+import {connect} from 'react-redux'
+import {filter, get, identity, map, pick} from 'lodash/fp'
 
+import {addFavorite, getStationMetadata, getStationStatuses, removeFavorite} from '../redux/actions'
 import {StationOption} from '../components'
 
-const FAVORITE_STATIONS = new Set(['74', '68'])
-
-export default class StationSelect extends React.Component {
+class StationSelect extends React.Component {
   static navigationOptions = {
     title: 'Add Stations',
   }
 
+  static propTypes = {
+    addFavorite: PropTypes.func.isRequired,
+    favoriteStations: PropTypes.instanceOf(Set),
+    getStationMetadata: PropTypes.func.isRequired,
+    getStationStatuses: PropTypes.func.isRequired,
+    removeFavorite: PropTypes.func.isRequired,
+    stationMetadata: PropTypes.object,
+    stationStatus: PropTypes.object,
+  }
+
   state = {
-    status: null,
-    metadata: null,
-    filteredStations: null,
+    filteredStations: this.props.stationMetadata,
+  }
+
+  componentDidMount() {
+    if (!this.props.stationMetadata) this.props.getStationMetadata()
+    if (!this.props.stationStatus) this.props.getStationStatuses()
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.stationMetadata !== this.props.stationMetadata) {
+      this.setState({filteredStations: newProps.stationMetadata})
+    }
   }
 
   onSearch = query => {
     if (!query) {
-      this.setState({filteredStations: this.state.metadata})
+      this.setState({filteredStations: this.props.stationMetadata})
       return
     }
     const regex = new RegExp(query, 'i')
     this.setState({
-      filteredStations: filter(station => regex.test(station.name), this.state.metadata),
+      filteredStations: filter(station => regex.test(station.name), this.props.stationMetadata),
     })
   }
 
-  hasLoaded = () => this.state.status && this.state.metadata
+  onStationPress = stationId => () => {
+    if (this.props.favoriteStations.has(stationId)) {
+      this.props.removeFavorite(stationId)
+    } else {
+      this.props.addFavorite(stationId)
+    }
+  }
+
+  hasLoaded = () => this.props.stationStatus && this.props.stationMetadata
 
   renderStation = metadata => (
     <StationOption
       key={metadata.id}
-      isSelected={FAVORITE_STATIONS.has(metadata.id)}
+      isSelected={this.props.favoriteStations.has(metadata.id)}
+      onPress={this.onStationPress(metadata.id)}
       {...metadata}
       {...get(metadata.id, this.state.status)}
     />
@@ -61,3 +90,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 })
+
+export default connect(
+  identity,
+  {addFavorite, getStationMetadata, getStationStatuses, removeFavorite}
+)(StationSelect)

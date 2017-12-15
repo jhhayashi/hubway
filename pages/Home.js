@@ -7,8 +7,6 @@ import {get, identity} from 'lodash/fp'
 import {getStationStatuses, getStationMetadata} from '../redux/actions'
 import {Station} from '../components'
 
-const FAVORITE_STATIONS = ['74', '68']
-
 class Home extends React.Component {
   static navigationOptions = ({navigation, screenProps}) => ({
     title: 'My Stations',
@@ -16,6 +14,9 @@ class Home extends React.Component {
   })
 
   static propTypes = {
+    favoriteStations: PropTypes.instanceOf(Set),
+    getStationMetadata: PropTypes.func.isRequired,
+    getStationStatuses: PropTypes.func.isRequired,
     stationMetadata: PropTypes.object,
     stationStatus: PropTypes.object,
   }
@@ -46,7 +47,7 @@ class Home extends React.Component {
     return (
       <ScrollView style={styles.container}>
         {this.state.loaded
-          ? FAVORITE_STATIONS.map(this.renderStation)
+          ? [...this.props.favoriteStations].map(this.renderStation)
           : <Text>Loading...</Text>
         }
       </ScrollView>

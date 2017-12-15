@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {StyleSheet, Text, View} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity} from 'react-native'
 
 const StationOption = props => (
-  <View style={styles.container}>
+  <TouchableOpacity style={styles.container} onPress={props.onPress}>
     <Text style={styles.icon}>{props.isSelected && '*'}</Text>
     <Text>{props.name}</Text>
-  </View>
+  </TouchableOpacity>
 )
 
 StationOption.propTypes = {
