@@ -7,7 +7,7 @@ const desearalize = res =>
     ? res.json()
     : res.text()
 
-const keyById = keyBy('station_id')
+const keyById = keyBy('id')
 
 const processStatus = status => ({
   id: status.station_id,
@@ -15,7 +15,7 @@ const processStatus = status => ({
   docksAvailable: status.num_docks_available,
 })
 
-const processStatuses = compose(map(processStatus), keyById)
+const processStatuses = compose(keyById, map(processStatus))
 
 export const fetchStationStatuses = () => new Promise(
   resolve => setTimeout(() =>
@@ -32,7 +32,7 @@ const processMetadata = metadata => ({
   name: metadata.name,
 })
 
-const processAllMetadata = compose(map(processMetadata), keyById)
+const processAllMetadata = compose(keyById, map(processMetadata))
 
 export const fetchStationMetadata = () => new Promise(
   resolve => resolve(processAllMetadata(require('./data/station_information.json').data.stations))
