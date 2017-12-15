@@ -1,11 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native'
+import {FlatList, StyleSheet, Text, TextInput, View} from 'react-native'
 import {connect} from 'react-redux'
-import {filter, get, identity, map, pick} from 'lodash/fp'
+import {filter, get, identity, map, pick, values} from 'lodash/fp'
 
 import {addFavorite, getStationMetadata, getStationStatuses, removeFavorite} from '../redux/actions'
 import {StationOption} from '../components'
+
+const getKey = get('id')
 
 class StationSelect extends React.Component {
   static navigationOptions = {
@@ -58,7 +60,7 @@ class StationSelect extends React.Component {
 
   hasLoaded = () => this.props.stationStatus && this.props.stationMetadata
 
-  renderStation = metadata => (
+  renderStation = ({item: metadata}) => (
     <StationOption
       key={metadata.id}
       isSelected={this.props.favoriteStations.has(metadata.id)}
@@ -66,10 +68,10 @@ class StationSelect extends React.Component {
       {...metadata}
       {...get(metadata.id, this.state.status)}
     />
-    )
+  )
 
   render() {
-    // TODO use FlatView
+    console.log(values(this.state.filteredStations))
     return (
       <View style={styles.container}>
         <TextInput
@@ -77,12 +79,15 @@ class StationSelect extends React.Component {
           onChangeText={this.onSearch}
           placeholder="Search..."
         />
-        <ScrollView>
-          {this.hasLoaded()
-            ? map(this.renderStation, this.state.filteredStations)
-            : <Text>Loading...</Text>
-          }
-        </ScrollView>
+        {this.hasLoaded()
+            ? (
+              <FlatList
+                data={values(this.state.filteredStations)}
+                keyExtractor={getKey}
+                renderItem={this.renderStation}
+              />
+            ) : <Text>Loading...</Text>
+        }
       </View>
     );
   }
