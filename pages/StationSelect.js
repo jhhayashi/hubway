@@ -78,6 +78,8 @@ class StationSelect extends React.Component {
           style={styles.filterInput}
           onChangeText={this.onSearch}
           placeholder="Search..."
+          clearButtonMode="always"
+          returnKeyType="search"
         />
         {this.hasLoaded()
             ? (

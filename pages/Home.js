@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Button, RefreshControl, StyleSheet, ScrollView, Text, TouchableOpacity, View} from 'react-native'
+import {RefreshControl, StyleSheet, ScrollView, Text, TouchableOpacity, View} from 'react-native'
+import {Feather} from '@expo/vector-icons'
 import {connect} from 'react-redux'
 import {get, identity} from 'lodash/fp'
 
@@ -10,7 +11,11 @@ import {Station} from '../components'
 class Home extends React.Component {
   static navigationOptions = ({navigation, screenProps}) => ({
     title: 'My Stations',
-    headerRight: <Button onPress={() => navigation.navigate('StationSelect')} title="+" />,
+    headerRight: (
+      <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('StationSelect')}>
+        <Feather name="plus" size={20} />
+      </TouchableOpacity>
+    ),
   })
 
   static propTypes = {
@@ -89,6 +94,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  icon: {
+    margin: 10,
   },
   timestamp: {
     marginTop: 10,
