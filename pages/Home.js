@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Button, StyleSheet, ScrollView, Text, TouchableOpacity, View} from 'react-native'
+import {Button, RefreshControl, StyleSheet, ScrollView, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 import {get, identity} from 'lodash/fp'
 
@@ -22,15 +22,20 @@ class Home extends React.Component {
   }
 
   state = {
-    loaded: false,
+    refreshing: true,
   }
 
   componentDidMount() {
+    this.fetchData()
+  }
+
+  fetchData = () => {
+    this.setState({refreshing: true})
     Promise.all([
       this.props.getStationStatuses(),
       this.props.getStationMetadata(),
     ]).then(() => {
-      this.setState({loaded: true})
+      this.setState({refreshing: false})
     })
   }
 
@@ -55,10 +60,6 @@ class Home extends React.Component {
         </TouchableOpacity>
       )
     }
-    if (!this.state.loaded) {
-      return <Text>Loading...</Text>
-    }
-
     return (
       <View style={styles.container}>
         {this.props.lastFetched && (
@@ -66,7 +67,12 @@ class Home extends React.Component {
             Last Updated: {this.props.lastFetched.toLocaleString()}
           </Text>
         )}
-        <ScrollView style={styles.container}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={this.state.refreshing} onRefresh={this.fetchData} />
+          }
+          style={styles.container}
+        >
           {[...this.props.favoriteStations].map(this.renderStation)}
         </ScrollView>
       </View>
