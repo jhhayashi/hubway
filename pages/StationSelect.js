@@ -72,7 +72,11 @@ class StationSelect extends React.Component {
     // TODO use FlatView
     return (
       <View style={styles.container}>
-        <TextInput onChangeText={this.onSearch} />
+        <TextInput
+          style={styles.filterInput}
+          onChangeText={this.onSearch}
+          placeholder="Search..."
+        />
         <ScrollView>
           {this.hasLoaded()
             ? map(this.renderStation, this.state.filteredStations)
@@ -88,6 +92,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  filterInput: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderColor: '#666',
+    borderWidth: 1,
+    margin: 10,
   },
 })
 

@@ -1,11 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Feather} from '@expo/vector-icons'
 
 const StationOption = props => (
-  <TouchableOpacity style={styles.container} onPress={props.onPress}>
-    <Text style={styles.icon}>{props.isSelected && '*'}</Text>
-    <Text>{props.name}</Text>
+  <TouchableOpacity
+    style={[styles.container, props.isSelected && styles.selected]}
+    onPress={props.onPress}
+  >
+    <View style={styles.icon}>
+      {props.isSelected && <Feather name="check" size={20} />}
+    </View>
+    <Text style={styles.fill}>{props.name}</Text>
   </TouchableOpacity>
 )
 
@@ -19,14 +25,25 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     marginLeft: 10,
-    marginTop: 10,
+    marginBottom: 10,
     backgroundColor: '#eee',
     flexDirection: 'row',
+    minHeight: 40,
+    alignItems: 'center',
   },
   icon: {
-    width: 20,
+    flex: 1,
+    minWidth: 20,
     marginRight: 10,
-  }
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fill: {
+    flex: 20,
+  },
+  selected: {
+    backgroundColor: '#afa',
+  },
 })
 
 export default StationOption

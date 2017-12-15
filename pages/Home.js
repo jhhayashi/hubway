@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Button, StyleSheet, Text, ScrollView} from 'react-native'
+import {Button, StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import {get, identity} from 'lodash/fp'
 
@@ -43,13 +43,25 @@ class Home extends React.Component {
     />
   )
 
+  navigateToStationSelect = () => {
+    this.props.navigation.navigate('StationSelect')
+  }
+
   render() {
+    if (!this.props.favoriteStations.size) {
+      return (
+        <TouchableOpacity style={styles.fullPageButton} onPress={this.navigateToStationSelect}>
+          <Text>Press to add your favorite stations</Text>
+        </TouchableOpacity>
+      )
+    }
+    if (!this.state.loaded) {
+      return <Text>Loading...</Text>
+    }
+
     return (
       <ScrollView style={styles.container}>
-        {this.state.loaded
-          ? [...this.props.favoriteStations].map(this.renderStation)
-          : <Text>Loading...</Text>
-        }
+        {[...this.props.favoriteStations].map(this.renderStation)}
       </ScrollView>
     )
   }
@@ -59,6 +71,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  fullPageButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 

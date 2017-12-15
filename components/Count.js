@@ -19,8 +19,10 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     alignItems: 'center',
-    backgroundColor: '#dde',
     margin: 10,
+    borderColor: '#333',
+    borderWidth: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
   },
   title: {
     marginBottom: 5,
