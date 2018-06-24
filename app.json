@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "hubway",
-    "description": "An empty new project",
+    "description": "App to track the status of hubway stations",
     "slug": "hubway",
     "privacy": "public",
     "sdkVersion": "27.0.0",
@@ -15,7 +15,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jordanhayashi.hubway"
     }
   }
 }
