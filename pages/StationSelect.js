@@ -71,7 +71,6 @@ class StationSelect extends React.Component {
   )
 
   render() {
-    console.log(values(this.state.filteredStations))
     return (
       <View style={styles.container}>
         <TextInput
