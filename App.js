@@ -1,5 +1,5 @@
 import React from 'react'
-import {StackNavigator} from 'react-navigation'
+import {createAppContainer, createStackNavigator} from 'react-navigation'
 import {Provider} from 'react-redux'
 import {PersistGate} from 'redux-persist/es/integration/react'
 
@@ -8,7 +8,7 @@ import configureStore from './redux/store'
 
 const {persistor, store} = configureStore()
 
-const MainNavigator = StackNavigator({
+const MainNavigator = createStackNavigator({
   Home: {
     screen: Home,
   },
@@ -17,10 +17,12 @@ const MainNavigator = StackNavigator({
   },
 });
 
+const AppContainer = createAppContainer(MainNavigator)
+
 export default () => (
   <Provider store={store}>
     <PersistGate persistor={persistor}>
-      <MainNavigator />
+      <AppContainer />
     </PersistGate>
   </Provider>
 )
