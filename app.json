@@ -4,7 +4,6 @@
     "description": "App to track the status of hubway stations",
     "slug": "hubway",
     "privacy": "public",
-    "sdkVersion": "34.0.0",
     "platforms": [
       "ios",
       "android",
