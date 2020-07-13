@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "expo": "^38.0.0",
+    "galio-framework": "^0.7.1",
     "lodash": "^4.17.19",
     "react": "16.11.0",
     "react-dom": "16.11.0",

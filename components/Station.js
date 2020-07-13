@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
+import {StyleSheet} from 'react-native'
+import {Block, Card, Text} from 'galio-framework'
 
 import Count from './Count'
 
@@ -10,9 +11,11 @@ const getCountVariant = (count, capacity) => {
 }
 
 const Station = props => (
-  <View style={styles.container}>
-    <Text style={styles.title}>{props.name}</Text>
-    <View style={styles.flexRight}>
+  <Card
+    style={styles.container}
+  >
+    <Text bold>{props.name}</Text>
+    <Block row>
       <Count
         label="Bikes"
         value={props.bikesAvailable}
@@ -23,8 +26,8 @@ const Station = props => (
         value={props.docksAvailable}
         variant={getCountVariant(props.docksAvailable, props.capacity)}
       />
-    </View>
-  </View>
+    </Block>
+  </Card>
 )
 
 Station.propTypes = {
@@ -43,12 +46,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: '#eee',
     alignItems: 'center',
-  },
-  flexRight: {
-    flexDirection: 'row',
-  },
-  title: {
-    fontWeight: 'bold',
   },
 })
 
