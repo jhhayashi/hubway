@@ -1,2 +1,4 @@
-export Station from './Station'
-export StationOption from './StationOption'
+import Station from './Station'
+import StationOption from './StationOption'
+
+export {Station, StationOption}

@@ -1,2 +1,4 @@
-export Home from './Home'
-export StationSelect from './StationSelect'
+import Home from './Home'
+import StationSelect from './StationSelect'
+
+export {Home, StationSelect}
